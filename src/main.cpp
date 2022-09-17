@@ -1,44 +1,19 @@
 #include <Arduino.h>
-#include <NTPClient.h>
-// change next line to use with another board/shield
-//#include <ESP8266WiFi.h>
-//#include <WiFi.h> // for WiFi shield
-//#include <WiFi101.h> // for WiFi 101 shield or MKR1000
-#include <WiFiUdp.h>
+#include "19pix.h"      // All the pixel stuff
+#include "wifiStuff.h"  // All Wifi-stuff, NTP, OTA
 
-
- /*
-  AsyncElegantOTA Demo Example - This example will work for both ESP8266 & ESP32 microcontrollers.
-  -----
-  Author: Ayush Sharma ( https://github.com/ayushsharma82 )
-  
-  Important Notice: Star the repository on Github if you like the library! :)
-  Repository Link: https://github.com/ayushsharma82/AsyncElegantOTA
-*/
-
-#if defined(ESP8266)
-  #include <ESP8266WiFi.h>
-  #include <ESPAsyncTCP.h>
-#elif defined(ESP32)
-  #include <WiFi.h>
-  #include <AsyncTCP.h>
-#endif
-
-#include <ESPAsyncWebServer.h>
-#include <AsyncElegantOTA.h>
-
-AsyncWebServer server(80);
-const char *ssid     = "COVID-21 6G Test Replicator 2.4G";
-const char *password = "bdxCugDF";
- 
-WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP);
 
 // Variables
 int nowSec, lastSec, nowMin, nowHour;
+bool secOn, secOff;
 
 void setup(){
   Serial.begin(115000);
+
+  // This resets all the neopixels to an off state
+  strip.Begin();
+  strip.Show();
+
   WiFi.mode(WIFI_STA);
 
   WiFi.begin(ssid, password);
@@ -80,9 +55,18 @@ void loop() {
     nowHour = timeClient.getHours();
 
     if (nowSec != lastSec){   // Only do something every second
+      if(! secOn){
+        secOn = true;
+        strip.SetPixelColor(0, blue);
+        Serial.println("ON");  // DEBUG
+      }
+      else {
+        secOn = false;
+        strip.SetPixelColor(0, hslBlack);
+        Serial.println("OFF");  // DEBUG
+      }
       lastSec = nowSec;
-      Serial.print("... Blink ");  // Blink center light
-      Serial.print(nowMin%20);  // Blink LED 1
+      Serial.print("... Blink ");  // Blink center light - LED 1
         switch (nowSec) {
           case 10:
             Serial.println("Ten seconds");  // Set LED 2
@@ -109,40 +93,40 @@ void loop() {
 
             switch (nowMin) {
           case 5:
-            Serial.println("Five minutes");  // Set LED 8
+            Serial.println("5 minutes");  // Set LED 8
             break;
           case 10:
-            Serial.println("Ten minutes");  // Set LED 9
+            Serial.println("10 minutes");  // Set LED 9
             break;
           case 15:
-            Serial.println("Ten minutes");  // Set LED 10
+            Serial.println("15 minutes");  // Set LED 10
             break;
           case 20:
-            Serial.println("Twenty minutes");  // Set LED 11
+            Serial.println("20 minutes");  // Set LED 11
             break;
           case 25:
-            Serial.println("Twenty minutes");  // Set LED 12
+            Serial.println("25 minutes");  // Set LED 12
             break;
           case 30:
-            Serial.println("Thirty minutes");  // Set LED 13
+            Serial.println("30 minutes");  // Set LED 13
             break;
           case 35:
-            Serial.println("Thirty minutes");  // Set LED 14
+            Serial.println("35 minutes");  // Set LED 14
             break;
           case 40:
-            Serial.println("Forty minutes");  // Set LED 15
+            Serial.println("40 minutes");  // Set LED 15
             break;
           case 45:
-            Serial.println("Forty minutes");  // Set LED 16
+            Serial.println("45 minutes");  // Set LED 16
             break;
           case 50:
-            Serial.println("Fifty minutes");  // Set LED 17
+            Serial.println("50 minutes");  // Set LED 17
             break;
           case 55:
-            Serial.println("Fifty minutes");  // Set LED 18
+            Serial.println("55 minutes");  // Set LED 18
             break;
           case 0:
-            Serial.println("Sixty minutes");  // Set LED 19
+            Serial.println("0 minutes");  // Set LED 19
             break;
           default:
             // statements
@@ -153,6 +137,5 @@ void loop() {
   else {
     // Do lots of blinky stuff as error message
   }
-  timeClient.getHours();
+  strip.Show();
 }
-
