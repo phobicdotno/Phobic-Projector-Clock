@@ -19,7 +19,7 @@ const uint8_t PixelPin = 8;  // make sure to set this to the correct pin, ignore
 //
 // These two are the same as above as the DMA method is the default.
 // NOTE: These will ignore the PIN and use GPI03 pin.
-//NeoPixelBus<NeoGrbFeature, NeoEsp8266Dma800KbpsMethod> strip(PixelCount, PixelPin);
+NeoPixelBus<NeoGrbFeature, NeoEsp8266Dma800KbpsMethod> strip(PixelCount, PixelPin);
 //NeoPixelBus<NeoRgbFeature, NeoEsp8266Dma400KbpsMethod> strip(PixelCount, PixelPin);
 
 // Uart method is good for the Esp-01 or other pin restricted modules.
@@ -30,7 +30,7 @@ const uint8_t PixelPin = 8;  // make sure to set this to the correct pin, ignore
 
 // The bitbang method is really only good if you are not using WiFi features of the ESP.
 // It works with all but pin 16.
-NeoPixelBus<NeoGrbFeature, NeoEsp8266BitBang800KbpsMethod> strip(PixelCount, PixelPin);
+// NeoPixelBus<NeoGrbFeature, NeoEsp8266BitBang800KbpsMethod> strip(PixelCount, PixelPin);
 //NeoPixelBus<NeoRgbFeature, NeoEsp8266BitBang400KbpsMethod> strip(PixelCount, PixelPin);
 
 // four element pixels, RGBW

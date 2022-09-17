@@ -5,9 +5,14 @@
 
 // Variables
 int nowSec, lastSec, nowMin, nowHour;
-bool secOn, secOff;
+bool secOnOff;
+unsigned long previousMillis = 0;
+const long interval = 500;
+
+#define LED LED_BUILTIN //Led in NodeMCU at pin GPIO16 (D0) 
 
 void setup(){
+  pinMode(LED, OUTPUT); //LED pin as output
   Serial.begin(115000);
 
   // This resets all the neopixels to an off state
@@ -18,16 +23,12 @@ void setup(){
 
   WiFi.begin(ssid, password);
 
-  while ( WiFi.status() != WL_CONNECTED ) {
-    delay ( 500 );
-    Serial.print ( "." );
-  }
   timeClient.begin();
   timeClient.setTimeOffset(7200);
 
     // Wait for connection
   while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
+    delay(100);
     Serial.print(".");
   }
   Serial.println("");
@@ -54,17 +55,33 @@ void loop() {
     nowMin = timeClient.getMinutes();
     nowHour = timeClient.getHours();
 
+  unsigned long currentMillis = millis();
+
+  if (currentMillis - previousMillis >= interval) {
+    // save the last time you blinked the LED
+    previousMillis = currentMillis;
+
+    if(! secOnOff){
+      digitalWrite(LED, HIGH);
+      secOnOff = true;
+      strip.SetPixelColor(0, blue);
+      Serial.println("ON");  // DEBUG
+    }
+    else {
+      digitalWrite(LED, LOW);
+      secOnOff = false;
+      strip.SetPixelColor(0, hslBlack);
+      Serial.println("OFF");  // DEBUG
+    }
+
+    // set the LED with the ledState of the variable:
+    digitalWrite(LED, secOnOff);
+  }
+
+/*
+
+*/
     if (nowSec != lastSec){   // Only do something every second
-      if(! secOn){
-        secOn = true;
-        strip.SetPixelColor(0, blue);
-        Serial.println("ON");  // DEBUG
-      }
-      else {
-        secOn = false;
-        strip.SetPixelColor(0, hslBlack);
-        Serial.println("OFF");  // DEBUG
-      }
       lastSec = nowSec;
       Serial.print("... Blink ");  // Blink center light - LED 1
         switch (nowSec) {
