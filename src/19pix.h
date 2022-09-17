@@ -3,7 +3,7 @@
 const uint16_t PixelCount = 19; // this example assumes 4 pixels, making it smaller will cause a failure
 const uint8_t PixelPin = 8;  // make sure to set this to the correct pin, ignored for Esp8266
 
-#define colorSaturation 128
+#define colorSaturation 50
 
 // three element pixels, in different order and speeds
 // NeoPixelBus<NeoGrbFeature, Neo800KbpsMethod> strip(PixelCount, PixelPin);
@@ -47,3 +47,60 @@ HslColor hslGreen(green);
 HslColor hslBlue(blue);
 HslColor hslWhite(white);
 HslColor hslBlack(black);
+
+void one(RgbColor color){
+    strip.SetPixelColor(16, color);
+}
+void two(RgbColor color){
+    strip.SetPixelColor(17, color);
+}
+void three(RgbColor color){
+    strip.SetPixelColor(18, color);
+}
+void four(RgbColor color){
+    strip.SetPixelColor(7, color);
+}
+void five(RgbColor color){
+    strip.SetPixelColor(8, color);
+}
+void six(RgbColor color){
+    strip.SetPixelColor(9, color);
+}
+void seven(RgbColor color){
+    strip.SetPixelColor(10, color);
+}
+void eight(RgbColor color){
+    strip.SetPixelColor(11, color);
+}
+void nine(RgbColor color){
+    strip.SetPixelColor(12, color);
+}
+void ten(RgbColor color){
+    strip.SetPixelColor(13, color);
+}
+void eleven(RgbColor color){
+    strip.SetPixelColor(14, color);
+}
+void tvelve(RgbColor color){
+    strip.SetPixelColor(15, color);
+}
+void clearNumbers(){
+    for (int i = 7; i < 19; i++)
+    {
+        strip.SetPixelColor(i, black);
+    }
+}
+
+void clearSecs(){
+    for (int i = 0; i < 7; i++)
+    {
+        strip.SetPixelColor(i, black);
+    }
+}
+
+void waitingForWifi(){
+    for (int i = 7; i < 19; i++)
+    {
+        strip.SetPixelColor(i, black);
+    }
+}
