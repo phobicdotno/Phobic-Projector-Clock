@@ -68,20 +68,20 @@ void loop() {
     previousMillis = currentMillis;
 
     if(! secOnOff){
-      digitalWrite(LED, HIGH);
+//      digitalWrite(LED, HIGH);  // Onboard LED
       secOnOff = true;
       strip.SetPixelColor(0, blue);
       Serial.println("ON");  // DEBUG
     }
     else {
-      digitalWrite(LED, LOW);
+//      digitalWrite(LED, LOW); // Onboard LED
       secOnOff = false;
       strip.SetPixelColor(0, hslBlack);
       Serial.println("OFF");  // DEBUG
     }
 
     // set the LED with the ledState of the variable:
-    digitalWrite(LED, secOnOff);
+//    digitalWrite(LED, secOnOff);  // Onboard LED
   }
 
     if (nowSec != lastSec){   // Only do something every second
